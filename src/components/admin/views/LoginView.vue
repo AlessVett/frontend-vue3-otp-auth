@@ -37,7 +37,6 @@ export default {
     }
   },
   mounted() {
-    this.onCardClicked();
   },
   methods: {
     onCardClicked() {
@@ -120,7 +119,7 @@ export default {
         font-weight: 550;
         border-radius: 7px;
         cursor: pointer;
-        box-shadow: -1px 2px 4px .5px rgba(0, 0, 0, 0.15);
+        box-shadow: -1px 2px 4px .5px rgba(0, 0, 0, 0.25);
 
         &:hover {
           background-color: #4b5a77;
@@ -176,7 +175,7 @@ export default {
         font-weight: 550;
         border-radius: 7px;
         cursor: pointer;
-        box-shadow: -1px 2px 4px .5px rgba(0, 0, 0, 0.15);
+        box-shadow: -1px 2px 4px .5px rgba(0, 0, 0, 0.25);
 
         &:hover {
           background-color: rgb(171, 83, 83);
