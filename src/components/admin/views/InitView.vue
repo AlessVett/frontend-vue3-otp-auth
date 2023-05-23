@@ -6,10 +6,23 @@
   <div class="init-view">
     <div class="container">
       <div class="loader">
-          <div class="logo" :class="{ pressed }" @click="() => pressed = true">
+          <div class="logo" :class="{ pressed }" @click="logoPressed">
 
           </div>
           <div class="loader-component" v-show="pressed" :class="{ pressed }">
+            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+              <path fill="#6e86a9" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                <animateTransform
+                    attributeName="transform"
+                    attributeType="XML"
+                    type="rotate"
+                    dur="2s"
+                    from="0 50 50"
+                    to="360 50 50"
+                    repeatCount="indefinite" />
+              </path>
+            </svg>
           </div>
       </div>
     </div>
@@ -17,7 +30,6 @@
 </template>
 
 <script>
-// import { Camera, GltfModel, PointLight, Renderer, Scene } from 'troisjs';
 export default {
   name: 'InitView',
   data() {
@@ -26,17 +38,18 @@ export default {
     }
   },
   methods: {
-    modelLoaded(model) {
-      const renderer = this.$refs.renderer;
-      renderer.onBeforeRender(() => {
-        model.rotation.x += 0.01;
-      });
+    logoPressed() {
+      this.pressed = true;
+      setTimeout(() => {
+        console.log(this.$router.push('/login'))
+      }, 500);
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+
 .init-view {
   height: 100%;
   width: 100%;
@@ -66,12 +79,10 @@ export default {
         background-color: #6e86a9;
         transition: .2s;
 
-        z-index: 9 !important;
-
         &.pressed {
-          /* height: 80px; */
-          /* width: 80px; */
-          transform: translate(-50%, -150%);
+          height: 80px;
+          width: 80px;
+          // transform: translate(-50%, -150%);
           transition: .4s;
         }
 
@@ -86,25 +97,17 @@ export default {
       }
 
       &-component {
-        opacity: 0;
-        height: 200px;
-        width: 400px;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-
-        border-radius: 12px;
-        background-image: url("@/assets/media/59097644ada257296db3d19882f84ed6.gif");
-        background-size: cover;
-        background-position: center;
         transition: .4s;
 
-        z-index: 0 !important;
-
-        &.pressed {
-          transition: opacity .6s linear 2s;
-          opacity: 1;
+        svg {
+          width: 230px;
+          height: 230px;
+          margin: 5px 0 0 0;
+          display:inline-block;
         }
       }
     }

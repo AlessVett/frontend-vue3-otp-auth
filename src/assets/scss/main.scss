@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+  font-family: Calibri, 'sans-serif';
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+
+  background-color: #fff2e8;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #fff2e8;
+
+  #app {
+    padding: 0; //
+    position: relative;
+    /* height: 90%;
+    width: auto; */
+    height: 100%;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    /* border-radius: 40px; */
+    background-color: white;
+
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, .3),
+                -2px -2px 8px rgba(255, 255, 255, .3);
+
+    overflow: hidden;
+  }
+}
+
+@screen xs {
+  max-width: 575.98px;
+}
+
+@screen sm {
+  min-width: 576px;
+  max-width: 767.98px;
+}
+
+@screen md {
+  min-width: 768px;
+  max-width: 991.98px;
+}
+
+@screen lg {
+  min-width: 992px;
+  max-width: 1199.98px;
+}
+
+@screen xl {
+  min-width: 1200px;
+}
+
+@media screen and (max-width: 575.98px) {
+  body {
+    #app {
+      height: 100%;
+      width: 100%;
+      aspect-ratio: auto;
+      border-radius: 0;
+    }
+  }
+}
