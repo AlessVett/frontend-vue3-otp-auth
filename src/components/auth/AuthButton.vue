@@ -9,8 +9,7 @@
 </template>
 
 <script>
-import { io } from "socket.io-client";
-
+import { io } from 'socket.io-client';
 export default {
   data() {
     return {
@@ -19,24 +18,25 @@ export default {
   },
   methods: {
     tryWs() {
-      const socket = io('http://localhost:5000/',{ transports: ['websocket'] });
+        const socket = io('http://172.20.10.3:5000/');
 
-      socket.on("connect_error", (err) => {
-          this.token = `connect_error due to ${err.message}`;
-      });
+        socket.on("connect_error", (err) => {
+            this.token = `connect_error due to ${err.message}`;
+        });
 
-      socket.on('accepted', () => {
-        socket.emit('otp');
-      });
+        socket.on('accepted', () => {
+            socket.emit('otp');
+        });
 
-      socket.on('otp', (args) => {
-        this.token = args.token;
-      });
+        socket.on('otp', (args) => {
+            this.token = args.token;
+        });
 
-      socket.on('authenticated', () => {
-        console.log('authenticated')
-        socket.close();
-      });
+        socket.on('authenticated', () => {
+            console.log('authenticated')
+            this.token = 'authenticated';
+            socket.close();
+        });
     }
   }
 }
