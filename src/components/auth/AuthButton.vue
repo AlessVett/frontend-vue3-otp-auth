@@ -5,6 +5,7 @@
   <div class="auth-btn" @click="tryWs">
     Button
   </div>
+  {{ token }}
 </template>
 
 <script>
@@ -12,18 +13,24 @@ import { io } from "socket.io-client";
 
 export default {
   data() {
-    return {}
+    return {
+        token: ''
+    }
   },
   methods: {
     tryWs() {
-      const socket = io('http://localhost:5000/');
+      const socket = io('http://localhost:5000/',{ transports: ['websocket'] });
+
+      socket.on("connect_error", (err) => {
+          this.token = `connect_error due to ${err.message}`;
+      });
 
       socket.on('accepted', () => {
         socket.emit('otp');
       });
 
       socket.on('otp', (args) => {
-        console.log(args);
+        this.token = args.token;
       });
 
       socket.on('authenticated', () => {
