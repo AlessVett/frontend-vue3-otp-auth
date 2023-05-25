@@ -17,7 +17,7 @@
         <div class="back">
           <div class="btn-reload" @click="onReloadClick"><i class="bi bi-arrow-clockwise"></i></div>
           <div class="description">
-            {{ token }}
+            <a target="_blank" :href="token">{{ token }}</a>
           </div>
           <div class="btn-cancel" @click="onCardClicked">
             Annulla
@@ -29,25 +29,60 @@
 </template>
 
 <script>
+import { io } from 'socket.io-client';
 export default {
   data() {
     return {
       active: false,
-      token: ''
+      token: '',
+      socket: null,
+      sse: null
     }
-  },
-  mounted() {
   },
   methods: {
     onCardClicked() {
       this.active = !this.active
-      this.active ? this.randomToken() : this.token = '';
+      if (this.active) {
+          this.socket = io('http://172.20.10.3:5000/');
+          this.socket.on('connect_error', (err) => {
+              console.log(err);
+              this.active = false;
+          });
+          this.socket.on('accepted', () => {
+              this.socket.emit('otp');
+          });
+          this.socket.on('otp', (args) => {
+              this.token = `https://t.me/share/url?url=/auth&text=${this.socket.id}$${args.token}`;
+              this.sse = new EventSource(`http://172.20.10.3:5000/sse/${args.token}`);
+
+              this.sse.onmessage = (e) => {
+                const data = JSON.parse(e.data);
+
+                if (data.status) {
+                  this.socket.close();
+                  this.sse.close();
+                  this.token = 'auth';
+                  this.$router.push('/home');
+                }
+              }
+          });
+          this.socket.on('authenticated', () => {
+              this.token = 'authenticated';
+              this.socket.close();
+              this.socket = null;
+          });
+      } else {
+          this.token = '';
+      }
     },
     onReloadClick() {
-      this.randomToken();
-    },
-    randomToken() {
-      this.token = String(Array(50).fill(null).map((_, i) => String(Math.ceil((i + 1) * Math.random())).split('')[0])).replaceAll(',', '');
+        /*
+        if (!this.socket) {
+            this.socket = io('http://192.168.1.10:5000');
+        } else {
+            this.socket.emit('otp');
+        }
+        */
     }
   }
 }

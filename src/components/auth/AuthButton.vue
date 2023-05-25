@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     tryWs() {
-        const socket = io('http://172.20.10.3:5000/');
+        const socket = io('http://192.168.1.10:5000/');
 
         socket.on("connect_error", (err) => {
             this.token = `connect_error due to ${err.message}`;
