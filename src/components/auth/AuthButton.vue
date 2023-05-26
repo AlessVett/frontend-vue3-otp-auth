@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     tryWs() {
-        const socket = io('http://172.20.10.3:5000/');
+        const socket = io('http://localhost:5000/');
 
         socket.on("connect_error", (err) => {
             this.token = `connect_error due to ${err.message}`;
@@ -30,12 +30,17 @@ export default {
 
         socket.on('otp', (args) => {
             this.token = args.token;
-        });
+            const events = new EventSource(`http://localhost:5000/${this.token}`);
 
-        socket.on('authenticated', () => {
-            console.log('authenticated')
-            this.token = 'authenticated';
-            socket.close();
+            events.onmessage = (event) => {
+              const data = JSON.parse(event.data);
+              if (data.status) {
+                socket.close();
+                events.close();
+                this.token = 'authenticated';
+                this.$router.push('/home');
+              }
+            }
         });
     }
   }
